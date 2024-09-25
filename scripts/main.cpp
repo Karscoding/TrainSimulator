@@ -3,10 +3,13 @@
 //
 
 #include <SDL.h>
-#include <SDL_image.h>
 #include <SDL_ttf.h>
 
 #include "simulator.h"
+#include "textDrawer.h"
+#include "objectDrawer.h"
+#include "structs/vector2.h"
+#include "structs/object.h"
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
@@ -14,27 +17,19 @@
 
 // Entry point
 int main(int argc, char* args []) {
-    Simulator sim = Simulator(SCREEN_WIDTH, SCREEN_HEIGHT);
-
     TTF_Init();
 
-    TTF_Font *font = TTF_OpenFont("../resources/fonts/Roboto-Black.ttf", 32);
-    SDL_Surface* surface = TTF_RenderUTF8_Blended(font,
-                                                  "Hello World!", { 0xFF, 0xFF, 0xFF, 0 });
-    SDL_Texture* texttext = SDL_CreateTextureFromSurface(sim.renderer, surface);
-    SDL_Rect recttext = {10, 10, surface->w, surface->h};
+    Simulator sim = Simulator(SCREEN_WIDTH, SCREEN_HEIGHT);
+
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
         return 1;
 
-    SDL_Texture * texture = IMG_LoadTexture(sim.renderer, "../resources/VIRM.png");
-    SDL_Rect destination;
-    destination.h = 200;
-    destination.w = 1000;
-    destination.x = -500;
-    destination.y = 380;
+    Object *train = new Object(sim, "../resources/VIRM.png", Vector2(-500, 380), Dimensions(1000, 200));
 
     sim.running = true;
+
+    SDL_Texture *testText = TextDrawer::getTextTexture("Hello World", sim.mainFont, *sim.renderer);
 
     // sim loop
     while (sim.running) {
@@ -50,8 +45,8 @@ int main(int argc, char* args []) {
         // clear the screen
         SDL_RenderClear(sim.renderer);
         // copy the texture to the rendering context
-        SDL_RenderCopy(sim.renderer, texture, NULL, &destination);
-        SDL_RenderCopy(sim.renderer, texttext, NULL, &recttext);
+        ObjectDrawer::draw(train, sim.renderer);
+        TextDrawer::draw(testText, *sim.renderer, Vector2(100, 100));
         SDL_RenderPresent(sim.renderer);
     }
 
