@@ -44,7 +44,8 @@ int main(int argc, char* args []) {
 
         // clear the screen
         SDL_RenderClear(sim.renderer);
-        // copy the texture to the rendering context
+
+        // Render route objects
         for (Object *object : sim.currentRoute->objectList) {
             ObjectDrawer::draw(object, sim.renderer);
         }
