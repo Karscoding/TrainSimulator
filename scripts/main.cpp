@@ -1,56 +1,52 @@
+//
+// Created by karsh on 25-9-2024.
+//
+
 #include <SDL.h>
 #include <SDL_image.h>
 
+#include "simulator.h"
 
-#define WIDTH 1280
-#define HEIGHT 720
+#define SCREEN_WIDTH 1280
+#define SCREEN_HEIGHT 720
 
+
+// Entry point
 int main(int argc, char* args []) {
-    // variable declarations
-    SDL_Window *win = NULL;
-    SDL_Renderer *renderer = NULL;
+    Simulator sim = Simulator(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-    bool running = false;
-
-    // Initialize SDL.
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
         return 1;
 
-
-    // create the window and renderer
-    // note that the renderer is accelerated
-    win = SDL_CreateWindow("Train Simulator", 100, 100, WIDTH, HEIGHT, 0);
-    renderer = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
-
-    SDL_Texture * texture = IMG_LoadTexture(renderer, "../resources/VIRM.png");
+    SDL_Texture * texture = IMG_LoadTexture(sim.renderer, "../resources/VIRM.png");
     SDL_Rect destination;
     destination.h = 200;
     destination.w = 1000;
     destination.x = -500;
     destination.y = 380;
 
-    running = true;
+    sim.running = true;
 
-    // main loop
-    while (running) {
+    // sim loop
+    while (sim.running) {
 
         // event handling
         SDL_Event e;
         if ( SDL_PollEvent(&e) ) {
             if (e.type == SDL_QUIT || e.type == SDL_KEYUP && e.key.keysym.sym == SDLK_ESCAPE) {
-                running = false;
+                sim.running = false;
             }
         }
 
         // clear the screen
-        SDL_RenderClear(renderer);
+        SDL_RenderClear(sim.renderer);
         // copy the texture to the rendering context
-        SDL_RenderCopy(renderer, texture, NULL, &destination);
-        SDL_RenderPresent(renderer);
+        SDL_RenderCopy(sim.renderer, texture, NULL, &destination);
+        SDL_RenderPresent(sim.renderer);
     }
 
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(win);
+    SDL_DestroyRenderer(sim.renderer);
+    SDL_DestroyWindow(sim.window);
     SDL_Quit();
     return 0;
 }
