@@ -16,6 +16,14 @@
 int main(int argc, char* args []) {
     Simulator sim = Simulator(SCREEN_WIDTH, SCREEN_HEIGHT);
 
+    TTF_Init();
+
+    TTF_Font *font = TTF_OpenFont("../resources/fonts/Roboto-Black.ttf", 32);
+    SDL_Surface* surface = TTF_RenderUTF8_Blended(font,
+                                                  "Hello World!", { 0xFF, 0xFF, 0xFF, 0 });
+    SDL_Texture* texttext = SDL_CreateTextureFromSurface(sim.renderer, surface);
+    SDL_Rect recttext = {10, 10, surface->w, surface->h};
+
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
         return 1;
 
@@ -43,6 +51,7 @@ int main(int argc, char* args []) {
         SDL_RenderClear(sim.renderer);
         // copy the texture to the rendering context
         SDL_RenderCopy(sim.renderer, texture, NULL, &destination);
+        SDL_RenderCopy(sim.renderer, texttext, NULL, &recttext);
         SDL_RenderPresent(sim.renderer);
     }
 
