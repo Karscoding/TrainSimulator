@@ -13,7 +13,11 @@ add_executable(TrainSimulator scripts/simulator.cpp
         scripts/structs/dimensions.cpp
         scripts/structs/object.cpp
         scripts/objectDrawer.h
-        scripts/objectDrawer.cpp)
+        scripts/objectDrawer.cpp
+        scripts/routes/route.h
+        scripts/routes/route.cpp
+        scripts/routes/routeTest.h
+        scripts/routes/routeTest.cpp)
 
 # --- SDL2 SETUP ---
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)

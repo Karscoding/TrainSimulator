@@ -2,9 +2,6 @@
 // Created by karsh on 25-9-2024.
 //
 
-// SDL Includes
-#include <SDL.h>
-
 // Internal Includes
 #include "simulator.h"
 

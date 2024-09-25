@@ -5,17 +5,23 @@
 #ifndef TRAINSIMULATOR_SIMULATOR_H
 #define TRAINSIMULATOR_SIMULATOR_H
 
-#include "SDL_ttf.h"
+#include <SDL_ttf.h>
+#include <SDL.h>
+#include "routes/route.h"
+
+struct Route;
 
 // Is essentially a Main class with more appropriate naming
 class Simulator {
 public:
     int SCREEN_WIDTH;
     int SCREEN_HEIGHT;
-    SDL_Window* window;
-    SDL_Renderer* renderer;
+    SDL_Window *window;
+    SDL_Renderer *renderer;
 
-    TTF_Font* mainFont;
+    Route *currentRoute;
+
+    TTF_Font *mainFont;
 
     Simulator(int SCREEN_WIDTH, int SCREEN_HEIGHT);
     bool running;

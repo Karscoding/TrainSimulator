@@ -6,14 +6,14 @@
 #include <SDL_ttf.h>
 
 #include "simulator.h"
-#include "textDrawer.h"
 #include "objectDrawer.h"
+#include "textDrawer.h"
 #include "structs/vector2.h"
 #include "structs/object.h"
+#include "routes/routeTest.h"
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
-
 
 // Entry point
 int main(int argc, char* args []) {
@@ -25,7 +25,7 @@ int main(int argc, char* args []) {
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
         return 1;
 
-    Object *train = new Object(sim, "../resources/VIRM.png", Vector2(-500, 380), Dimensions(1000, 200));
+    sim.currentRoute = new RouteTest(sim);
 
     sim.running = true;
 
@@ -45,7 +45,9 @@ int main(int argc, char* args []) {
         // clear the screen
         SDL_RenderClear(sim.renderer);
         // copy the texture to the rendering context
-        ObjectDrawer::draw(train, sim.renderer);
+        for (Object *object : sim.currentRoute->objectList) {
+            ObjectDrawer::draw(object, sim.renderer);
+        }
         TextDrawer::draw(testText, *sim.renderer, Vector2(100, 100));
         SDL_RenderPresent(sim.renderer);
     }
