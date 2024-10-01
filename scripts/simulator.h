@@ -24,7 +24,10 @@ public:
 
     Simulator(int SCREEN_WIDTH, int SCREEN_HEIGHT);
 
-    void handleInput() const;
+    void handleInput(SDL_Event &event) const;
+
+    void textDrawing() const;
+    void debugLog() const;
 
     bool running;
 };

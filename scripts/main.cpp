@@ -7,10 +7,9 @@
 
 #include "simulator.h"
 #include "objectDrawer.h"
-#include "textDrawer.h"
-#include "structs/vector2.h"
 #include "structs/object.h"
 #include "routes/routeTest.h"
+#include "objects/train.h"
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
@@ -29,20 +28,18 @@ int main(int argc, char* args []) {
 
     sim.running = true;
 
-    SDL_Texture *testText = TextDrawer::getTextTexture("Hello World", sim.mainFont, *sim.renderer);
-
     // sim loop
     while (sim.running) {
-
-        sim.handleInput();
-
         // event handling
-        SDL_Event e;
-        if ( SDL_PollEvent(&e) ) {
-            if (e.type == SDL_QUIT || e.type == SDL_KEYUP && e.key.keysym.sym == SDLK_ESCAPE) {
+        SDL_Event event;
+        if ( SDL_PollEvent(&event) ) {
+            if (event.type == SDL_QUIT || event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_ESCAPE) {
                 sim.running = false;
             }
         }
+
+        sim.handleInput(event);
+
 
         // clear the screen
         SDL_RenderClear(sim.renderer);
@@ -52,9 +49,12 @@ int main(int argc, char* args []) {
             ObjectDrawer::draw(object, sim.renderer);
         }
 
-        ObjectDrawer::draw(reinterpret_cast<Object *>(sim.currentRoute->train), sim.renderer);
+        ObjectDrawer::draw(sim.currentRoute->train, sim.renderer);
 
-        TextDrawer::draw(testText, *sim.renderer, Vector2(100, 100));
+
+        sim.textDrawing();
+        sim.debugLog();
+
         SDL_RenderPresent(sim.renderer);
     }
 

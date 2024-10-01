@@ -56,7 +56,7 @@ void Train::decreasePower() {
 }
 
 void Train::decreaseBraking() {
-    if (0 < this->braking_setting <= 7) {
+    if (0 < this->braking_setting && this->braking_setting <= 7) {
         this->braking_setting--;
     } else if (this->emergency_braking && this->speed == 0) {
         this->braking_setting--;
