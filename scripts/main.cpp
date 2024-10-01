@@ -53,7 +53,7 @@ int main(int argc, char* args []) {
 
 
         sim.textDrawing();
-        sim.debugLog();
+//        sim.debugLog();
 
         SDL_RenderPresent(sim.renderer);
     }
