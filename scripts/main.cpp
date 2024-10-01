@@ -14,6 +14,9 @@
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 
+#define TICKRATE 60
+#define TICKDELAY 1000 / TICKRATE
+
 // Entry point
 int main(int argc, char* args []) {
     TTF_Init();
@@ -30,6 +33,8 @@ int main(int argc, char* args []) {
 
     // sim loop
     while (sim.running) {
+        Uint32 startTick = SDL_GetTicks();
+
         // event handling
         SDL_Event event;
         if ( SDL_PollEvent(&event) ) {
@@ -44,18 +49,34 @@ int main(int argc, char* args []) {
         // clear the screen
         SDL_RenderClear(sim.renderer);
 
+
         // Render route objects
+        sim.screenTilePosition = ceil(sim.screenPosition / SCREEN_WIDTH);
+
+        ObjectDrawer::drawTiledMovingBackground(sim.renderer, sim);
+
+
         for (Object *object : sim.currentRoute->objectList) {
             ObjectDrawer::draw(object, sim.renderer);
         }
 
         ObjectDrawer::draw(sim.currentRoute->train, sim.renderer);
 
+        sim.currentRoute->train->update();
+        sim.update();
+
 
         sim.textDrawing();
 //        sim.debugLog();
 
         SDL_RenderPresent(sim.renderer);
+
+        Uint32 tickTime = SDL_GetTicks() - startTick;
+        if (TICKDELAY > tickTime)
+        {
+            //Wait remaining time
+            SDL_Delay(TICKDELAY - tickTime);
+        }
     }
 
     SDL_DestroyRenderer(sim.renderer);

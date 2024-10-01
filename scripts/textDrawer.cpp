@@ -9,8 +9,10 @@ SDL_Texture* TextDrawer::getTextTexture(const char *message, TTF_Font *font, SDL
     return SDL_CreateTextureFromSurface(&renderer, surface);
 }
 
+
+// TODO: Add SDL_Color parameter with default value of Black
 void TextDrawer::drawTextFromString(SDL_Renderer &renderer, std::string *message, TTF_Font *font, Vector2 position) {
-    SDL_Surface *surface = TTF_RenderUTF8_Blended(font, message->c_str(), {0xFF, 0xFF, 0xFF, 0});
+    SDL_Surface *surface = TTF_RenderUTF8_Blended(font, message->c_str(), {0, 0, 0, 0});
     Dimensions size;
     SDL_Texture *texture = SDL_CreateTextureFromSurface(&renderer, surface);
     SDL_QueryTexture(texture, NULL, NULL, &size.width, &size.height);

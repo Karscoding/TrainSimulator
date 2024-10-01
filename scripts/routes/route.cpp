@@ -7,3 +7,8 @@
 void Route::addObject(Object *object) {
     this->objectList.push_back(object);
 }
+
+
+void Route::update() {
+
+}

@@ -13,8 +13,15 @@ class Train;
 struct Route {
 public:
     std::list<Object*> objectList;
+
+    // Background Objects
+    Object *bg;
+    Object *catenary;
+    Object *rail;
+
     Train *train;
     void addObject(Object *object);
+    void update();
 };
 
 

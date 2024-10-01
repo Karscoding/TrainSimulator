@@ -5,7 +5,7 @@
 #include "train.h"
 
 // Private
-void Train::applyPower(int value) {
+void Train::applyPower(float value) {
     this->applying_power = true;
     if (this->speed == 0) {
         this->speed += (value * this->traction_power) / 60;
@@ -19,7 +19,7 @@ void Train::applyPower(int value) {
     }
 }
 
-void Train::applyBraking(int value) {
+void Train::applyBraking(float value) {
     this->applying_braking = true;
     if (this->speed == 0 || this->speed < 0 || 0.1 > this->speed > 0) {
         this->speed = 0;
@@ -104,5 +104,17 @@ void Train::roll() {
 
 
 void Train::update() {
-    this->rect.x += (int) this->speed;
+    if (this->traction_setting > 0) {
+        this->applyPower((float) this->traction_setting);
+    } else if (this->braking_setting > 0) {
+        this->applyBraking((float) this->braking_setting);
+    } else {
+        this->roll();
+    }
+
+    if (this->speed != 0) {
+        this->speed_in_kmh = this->speed * 6.5f;
+    } else {
+        this->speed_in_kmh = 0;
+    }
 }

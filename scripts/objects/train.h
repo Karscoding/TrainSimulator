@@ -9,8 +9,8 @@
 
 class Train : public Object {
 private:
-    void applyPower(int value);
-    void applyBraking(int value);
+    void applyPower(float value);
+    void applyBraking(float value);
 public:
     float speed = 0;
     float speed_in_kmh = 0;

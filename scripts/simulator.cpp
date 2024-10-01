@@ -34,11 +34,12 @@ void Simulator::handleInput(SDL_Event &event) const {
                case SDLK_r:
                    this->currentRoute->train->resetPowerAndBraking();
                    break;
-               default:
-                   this->currentRoute->train->roll();
-                   break;
            }
     }
+}
+
+void Simulator::update() {
+    this->screenPosition += this->currentRoute->train->speed;
 }
 
 void Simulator::textDrawing() const {
@@ -49,6 +50,10 @@ void Simulator::textDrawing() const {
     TextDrawer::drawTextFromString(*this->renderer, new std::string("Braking: "), this->mainFont, Vector2(15, 50));
     message = std::to_string(this->currentRoute->train->braking_setting);
     TextDrawer::drawTextFromString(*this->renderer, &message, this->mainFont, Vector2(150, 50));
+
+    TextDrawer::drawTextFromString(*this->renderer, new std::string("Speed: "), this->mainFont, Vector2(15, 80));
+    message = std::to_string(this->currentRoute->train->speed_in_kmh);
+    TextDrawer::drawTextFromString(*this->renderer, &message, this->mainFont, Vector2(150, 80));
 }
 
 void Simulator::debugLog() const {

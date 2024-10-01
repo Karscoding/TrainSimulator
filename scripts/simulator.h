@@ -15,6 +15,8 @@ class Simulator {
 public:
     int SCREEN_WIDTH;
     int SCREEN_HEIGHT;
+    float screenPosition = 0;
+    int screenTilePosition;
     SDL_Window *window;
     SDL_Renderer *renderer;
 
@@ -23,6 +25,8 @@ public:
     TTF_Font *mainFont;
 
     Simulator(int SCREEN_WIDTH, int SCREEN_HEIGHT);
+
+    void update();
 
     void handleInput(SDL_Event &event) const;
 
