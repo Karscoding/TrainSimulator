@@ -7,14 +7,13 @@
 #ifndef TRAINSIMULATOR_OBJECT_H
 #define TRAINSIMULATOR_OBJECT_H
 
-#include "vector2.h"
-#include "dimensions.h"
-#include "../objectDrawer.h"
-#include "../simulator.h"
 #include <SDL.h>
 #include <SDL_image.h>
 
-class Simulator;
+#include "../simulator.h"
+#include "vector2.h"
+#include "../structs/dimensions.h"
+
 
 struct Object {
 public:

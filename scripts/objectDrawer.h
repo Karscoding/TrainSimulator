@@ -6,11 +6,9 @@
 #define TRAINSIMULATOR_OBJECTDRAWER_H
 
 #include <SDL.h>
-#include <SDL_image.h>
-
-#include "structs/object.h"
 
 struct Object;
+struct Dimensions;
 
 class ObjectDrawer {
 public:

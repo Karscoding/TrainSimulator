@@ -7,9 +7,8 @@
 
 #include <SDL_ttf.h>
 #include <SDL.h>
-#include "routes/route.h"
 
-struct Route;
+#include "routes/route.h"
 
 // Is essentially a Main class with more appropriate naming
 class Simulator {
@@ -24,6 +23,9 @@ public:
     TTF_Font *mainFont;
 
     Simulator(int SCREEN_WIDTH, int SCREEN_HEIGHT);
+
+    void handleInput() const;
+
     bool running;
 };
 

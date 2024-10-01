@@ -6,13 +6,14 @@
 #define TRAINSIMULATOR_ROUTE_H
 
 #include <list>
-#include "../structs/object.h"
 
 struct Object;
+class Train;
 
 struct Route {
 public:
     std::list<Object*> objectList;
+    Train *train;
     void addObject(Object *object);
 };
 

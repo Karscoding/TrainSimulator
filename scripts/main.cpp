@@ -34,6 +34,8 @@ int main(int argc, char* args []) {
     // sim loop
     while (sim.running) {
 
+        sim.handleInput();
+
         // event handling
         SDL_Event e;
         if ( SDL_PollEvent(&e) ) {
@@ -49,6 +51,9 @@ int main(int argc, char* args []) {
         for (Object *object : sim.currentRoute->objectList) {
             ObjectDrawer::draw(object, sim.renderer);
         }
+
+        ObjectDrawer::draw(reinterpret_cast<Object *>(sim.currentRoute->train), sim.renderer);
+
         TextDrawer::draw(testText, *sim.renderer, Vector2(100, 100));
         SDL_RenderPresent(sim.renderer);
     }

@@ -5,19 +5,15 @@ set(CMAKE_CXX_STANDARD 23)
 
 # Must set the path to the main.cpp, for example: scripts/main.cpp if it is inside a folder
 add_executable(TrainSimulator scripts/simulator.cpp
-        scripts/simulator.h
         scripts/main.cpp
         scripts/textDrawer.cpp
-        scripts/textDrawer.h
         scripts/structs/vector2.cpp
         scripts/structs/dimensions.cpp
         scripts/structs/object.cpp
-        scripts/objectDrawer.h
         scripts/objectDrawer.cpp
-        scripts/routes/route.h
         scripts/routes/route.cpp
-        scripts/routes/routeTest.h
-        scripts/routes/routeTest.cpp)
+        scripts/routes/routeTest.cpp
+        scripts/objects/train.cpp)
 
 # --- SDL2 SETUP ---
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
