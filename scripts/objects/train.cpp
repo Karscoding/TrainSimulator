@@ -10,7 +10,7 @@ void Train::applyPower(float value) {
     if (this->speed == 0) {
         this->speed += (value * this->traction_power) / 60;
         this->kwh_used += (20 / 10000) * this->traction_setting;
-    } else if (this->speed <= 15) {
+    } else if (this->speed < 15) {
         this->speed += (value * this->traction_power / 7) / 60;
         this->kwh_used += (10 / 10000) * this->traction_setting;
     } else {
@@ -105,9 +105,9 @@ void Train::roll() {
 
 void Train::update() {
     if (this->traction_setting > 0) {
-        this->applyPower((float) this->traction_setting);
+        this->applyPower((float) this->traction_setting / 10);
     } else if (this->braking_setting > 0) {
-        this->applyBraking((float) this->braking_setting);
+        this->applyBraking((float) this->braking_setting / 4);
     } else {
         this->roll();
     }

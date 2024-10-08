@@ -15,7 +15,10 @@
 // Entry point
 int main(int argc, char* args []) {
     TTF_Init();
+
     Simulator sim = Simulator(SCREEN_WIDTH, SCREEN_HEIGHT);
     sim.initialize();
     sim.run(TICKDELAY);
+
+    return 0;
 }
