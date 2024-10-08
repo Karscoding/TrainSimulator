@@ -122,6 +122,7 @@ void Simulator::textDrawing() const {
 
     TextDrawer::drawTextFromString(*this->renderer, new std::string("Speed: "), this->mainFont, Vector2(15, 80));
     message = std::to_string(this->currentRoute->train->speed_in_kmh);
+    message = message.substr(0, 4);
     TextDrawer::drawTextFromString(*this->renderer, &message, this->mainFont, Vector2(150, 80));
 }
 
