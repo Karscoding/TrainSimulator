@@ -2,9 +2,14 @@
 // Created by karsh on 25-9-2024.
 //
 
+#include <SDL.h>
+#include <SDL_ttf.h>
+
 #include "simulator.h"
+#include "objectDrawer.h"
 #include "objects/train.h"
 #include <string>
+#include "routes/routeTest.h"
 #include "textDrawer.h"
 
 Simulator::Simulator(int SCREEN_WIDTH, int SCREEN_HEIGHT)
@@ -13,6 +18,70 @@ Simulator::Simulator(int SCREEN_WIDTH, int SCREEN_HEIGHT)
     this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED);
 
     this->mainFont = TTF_OpenFont("../resources/fonts/Roboto-Black.ttf", 32);
+
+}
+
+void Simulator::initialize() {
+    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+        SDL_Quit();
+
+    this->currentRoute = new RouteTest(*this);
+
+    this->running = true;
+}
+
+void Simulator::run(int TICKDELAY) {
+    // sim loop
+    while (this->running) {
+        Uint32 startTick = SDL_GetTicks();
+
+        // event handling
+        SDL_Event event;
+        if ( SDL_PollEvent(&event) ) {
+            if (event.type == SDL_QUIT || event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_ESCAPE) {
+                this->running = false;
+            }
+        }
+
+        this->handleInput(event);
+
+
+        // clear the screen
+        SDL_RenderClear(this->renderer);
+
+
+        // Render route objects
+        this->screenTilePosition = ceil(this->screenPosition / SCREEN_WIDTH);
+
+        ObjectDrawer::drawTiledMovingBackground(this->renderer, *this);
+
+
+        for (Object *object : this->currentRoute->objectList) {
+            ObjectDrawer::draw(object, this->renderer);
+        }
+
+        ObjectDrawer::draw(this->currentRoute->train, this->renderer);
+
+        this->currentRoute->train->update();
+        this->update();
+
+
+        this->textDrawing();
+        //        this->debugLog();
+
+        SDL_RenderPresent(this->renderer);
+
+        Uint32 tickTime = SDL_GetTicks() - startTick;
+        if (TICKDELAY > tickTime)
+        {
+            //Wait remaining time
+            SDL_Delay(TICKDELAY - tickTime);
+        }
+    }
+
+    SDL_DestroyRenderer(this->renderer);
+    SDL_DestroyWindow(this->window);
+    SDL_Quit();
 }
 
 void Simulator::handleInput(SDL_Event &event) const {

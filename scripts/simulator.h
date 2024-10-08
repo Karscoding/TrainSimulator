@@ -16,7 +16,7 @@ public:
     int SCREEN_WIDTH;
     int SCREEN_HEIGHT;
     float screenPosition = 0;
-    int screenTilePosition;
+    int screenTilePosition{};
     SDL_Window *window;
     SDL_Renderer *renderer;
 
@@ -27,6 +27,9 @@ public:
     Simulator(int SCREEN_WIDTH, int SCREEN_HEIGHT);
 
     void update();
+
+    void initialize();
+    void run(int TICKDELAY);
 
     void handleInput(SDL_Event &event) const;
 
