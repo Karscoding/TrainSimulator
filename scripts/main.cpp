@@ -3,8 +3,10 @@
 //
 
 #include <SDL_ttf.h>
+#include <thread>
 
-#include "simulator.h"
+#include "simulator/simulator.h"
+#include "ai/ai.h"
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
@@ -18,7 +20,12 @@ int main(int argc, char* args []) {
 
     Simulator sim = Simulator(SCREEN_WIDTH, SCREEN_HEIGHT);
     sim.initialize();
+    AI ai = AI(sim.currentRoute->train, 140);
+
+    std::thread aiThread(&AI::run, &ai);
     sim.run(TICKDELAY);
+
+    ai.close();
 
     return 0;
 }

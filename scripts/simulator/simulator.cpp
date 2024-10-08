@@ -112,18 +112,41 @@ void Simulator::update() {
 }
 
 void Simulator::textDrawing() const {
-    TextDrawer::drawTextFromString(*this->renderer, new std::string("Traction: "), this->mainFont, Vector2(15, 15), SDL_Color(255, 0, 0, 255));
-    std::string message = std::to_string(this->currentRoute->train->traction_setting);
-    TextDrawer::drawTextFromString(*this->renderer, &message, this->mainFont, Vector2(150, 15));
+    SDL_Color color;
 
-    TextDrawer::drawTextFromString(*this->renderer, new std::string("Braking: "), this->mainFont, Vector2(15, 50));
-    message = std::to_string(this->currentRoute->train->braking_setting);
-    TextDrawer::drawTextFromString(*this->renderer, &message, this->mainFont, Vector2(150, 50));
 
-    TextDrawer::drawTextFromString(*this->renderer, new std::string("Speed: "), this->mainFont, Vector2(15, 80));
-    message = std::to_string(this->currentRoute->train->speed_in_kmh);
+    if (this->currentRoute->train->traction_setting > 0) {
+        color = SDL_Color(0, 153, 51, 255);
+    } else {
+        color = SDL_Color(0, 0, 0, 0);
+    }
+
+    TextDrawer::drawTextFromString(*this->renderer,new std::string("Traction: "),this->mainFont,Vector2(15, 15), color);
+    std::string value = std::to_string(this->currentRoute->train->traction_setting);
+    TextDrawer::drawTextFromString(*this->renderer, &value, this->mainFont, Vector2(150, 15), color);
+
+
+    if (this->currentRoute->train->braking_setting > 0) {
+        color = SDL_Color(204, 51, 0, 255);
+    } else {
+        color = SDL_Color(0, 0, 0, 0);
+    }
+
+    TextDrawer::drawTextFromString(*this->renderer,new std::string("Braking: "),this->mainFont,Vector2(15, 50), color);
+    value = std::to_string(this->currentRoute->train->braking_setting);
+    TextDrawer::drawTextFromString(*this->renderer, &value, this->mainFont, Vector2(150, 50), color);
+
+
+    if (this->currentRoute->train->speeding) {
+        color = SDL_Color(204, 51, 0, 255);
+    } else {
+        color = SDL_Color(0, 0, 0, 0);
+    }
+
+    TextDrawer::drawTextFromString(*this->renderer,new std::string("Speed: "),this->mainFont,Vector2(15, 80), color);
+    std::string message = std::to_string(this->currentRoute->train->speed_in_kmh);
     message = message.substr(0, 4);
-    TextDrawer::drawTextFromString(*this->renderer, &message, this->mainFont, Vector2(150, 80));
+    TextDrawer::drawTextFromString(*this->renderer, &message, this->mainFont, Vector2(150, 80), color);
 }
 
 void Simulator::debugLog() const {
