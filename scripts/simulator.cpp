@@ -112,7 +112,7 @@ void Simulator::update() {
 }
 
 void Simulator::textDrawing() const {
-    TextDrawer::drawTextFromString(*this->renderer, new std::string("Traction: "), this->mainFont, Vector2(15, 15));
+    TextDrawer::drawTextFromString(*this->renderer, new std::string("Traction: "), this->mainFont, Vector2(15, 15), SDL_Color(255, 0, 0, 255));
     std::string message = std::to_string(this->currentRoute->train->traction_setting);
     TextDrawer::drawTextFromString(*this->renderer, &message, this->mainFont, Vector2(150, 15));
 
