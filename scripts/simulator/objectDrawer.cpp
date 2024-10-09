@@ -11,6 +11,7 @@ void ObjectDrawer::draw(Object *object, SDL_Renderer *renderer) {
     SDL_RenderCopy(renderer, object->sprite_texture, nullptr, &object->rect);
 }
 
+// TODO: Use screen percentage so you can run it in 1920x1080
 void ObjectDrawer::drawTiledMovingBackground(SDL_Renderer *renderer, Simulator &sim) {
     sim.currentRoute->bg->rect.x = (int) -sim.screenPosition + (sim.SCREEN_WIDTH * (sim.screenTilePosition - 1));
     SDL_RenderCopy(renderer, sim.currentRoute->bg->sprite_texture, nullptr, &sim.currentRoute->bg->rect);
