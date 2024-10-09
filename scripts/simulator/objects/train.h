@@ -45,7 +45,9 @@ public:
     Train(Simulator &sim, const char *image_path, Vector2 position, float braking_power, float traction_power, float resistance);
 
     void increasePower();
+    void setPower(int value);
     void increaseBraking();
+    void setBraking(int value);
     void decreasePower();
     void decreaseBraking();
 

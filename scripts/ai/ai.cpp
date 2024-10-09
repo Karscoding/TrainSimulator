@@ -12,11 +12,9 @@ void AI::run() {
         switch (this->currentTask) {
             case Task::ACCELERATE:
                 if (!train->doors_opened && train->speed_in_kmh <= this->targetSpeed - 3) {
-                    if (train->traction_setting < 7) {
-                        train->increasePower();
-                    }
+                    train->setPower(7);
                 } else if (train->speed_in_kmh > targetSpeed) {
-                    train->decreasePower();
+                    train->setPower(0);
                     if (counter > 500) {
                         this->currentTask = Task::DECCELERATE;
                     } else {
@@ -26,25 +24,15 @@ void AI::run() {
                 break;
             case Task::DECCELERATE:
                 if (train->speed_in_kmh > this->targetSpeed - 5) {
-                    if (train->braking_setting < 2) {
-                        train->increaseBraking();
-                    }
+                    train->setBraking(2);
                 } else if (train->speed_in_kmh > this->targetSpeed - 10) {
-                    if (train->braking_setting < 3) {
-                        train->increaseBraking();
-                    }
-                } else if (train->speed_in_kmh > 20) {
-                    if (train->braking_setting < 5) {
-                        train->increaseBraking();
-                    }
-                } else if (train->speed_in_kmh > 10){
-                    if (train->braking_setting > 2) {
-                        train->decreaseBraking();
-                    }
+                    train->setBraking(3);
+                } else if (train->speed_in_kmh > 10) {
+                    train->setBraking(5);
+                } else if (train->speed_in_kmh > 5){
+                    train->setBraking(2);
                 } else if (train->speed_in_kmh > 2) {
-                    if (train->braking_setting > 1) {
-                        train->decreaseBraking();
-                    }
+                    train->setBraking(1);
                 }
                 break;
         }

@@ -43,9 +43,21 @@ void Train::increasePower() {
     }
 }
 
+void Train::setPower(int value) {
+    if (value <= 7 && value >= 0) {
+        this->traction_setting = value;
+    }
+}
+
 void Train::increaseBraking() {
     if (this->braking_setting <= 6 && this->traction_setting == 0) {
         this->braking_setting++;
+    }
+}
+
+void Train::setBraking(int value) {
+    if (value <= 7 && value >= 0) {
+        this->braking_setting = value;
     }
 }
 

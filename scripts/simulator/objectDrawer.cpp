@@ -7,39 +7,41 @@
 #include "structs/object.h"
 #include "structs/dimensions.h"
 
+#define TILE_WIDTH 1280
+
 void ObjectDrawer::draw(Object *object, SDL_Renderer *renderer) {
     SDL_RenderCopy(renderer, object->sprite_texture, nullptr, &object->rect);
 }
 
 // TODO: Use screen percentage so you can run it in 1920x1080
 void ObjectDrawer::drawTiledMovingBackground(SDL_Renderer *renderer, Simulator &sim) {
-    sim.currentRoute->bg->rect.x = (int) -sim.screenPosition + (sim.SCREEN_WIDTH * (sim.screenTilePosition - 1));
+    sim.currentRoute->bg->rect.x = (int) -sim.screenPosition + (TILE_WIDTH * (sim.screenTilePosition - 1));
     SDL_RenderCopy(renderer, sim.currentRoute->bg->sprite_texture, nullptr, &sim.currentRoute->bg->rect);
-    sim.currentRoute->bg->rect.x = (int) -sim.screenPosition + (sim.SCREEN_WIDTH * (sim.screenTilePosition + 0));
+    sim.currentRoute->bg->rect.x = (int) -sim.screenPosition + (TILE_WIDTH * (sim.screenTilePosition + 0));
     SDL_RenderCopy(renderer, sim.currentRoute->bg->sprite_texture, nullptr, &sim.currentRoute->bg->rect);
-    sim.currentRoute->bg->rect.x = (int) -sim.screenPosition + (sim.SCREEN_WIDTH * (sim.screenTilePosition + 1));
+    sim.currentRoute->bg->rect.x = (int) -sim.screenPosition + (TILE_WIDTH * (sim.screenTilePosition + 1));
     SDL_RenderCopy(renderer, sim.currentRoute->bg->sprite_texture, nullptr, &sim.currentRoute->bg->rect);
-    sim.currentRoute->bg->rect.x = (int) -sim.screenPosition + (sim.SCREEN_WIDTH * (sim.screenTilePosition + 2));
+    sim.currentRoute->bg->rect.x = (int) -sim.screenPosition + (TILE_WIDTH * (sim.screenTilePosition + 2));
     SDL_RenderCopy(renderer, sim.currentRoute->bg->sprite_texture, nullptr, &sim.currentRoute->bg->rect);
 
 
-    sim.currentRoute->catenary->rect.x = (int) -sim.screenPosition + (sim.SCREEN_WIDTH * (sim.screenTilePosition - 1));
+    sim.currentRoute->catenary->rect.x = (int) -sim.screenPosition + (TILE_WIDTH * (sim.screenTilePosition - 1));
     SDL_RenderCopy(renderer, sim.currentRoute->catenary->sprite_texture, nullptr, &sim.currentRoute->catenary->rect);
-    sim.currentRoute->catenary->rect.x = (int) -sim.screenPosition + (sim.SCREEN_WIDTH * (sim.screenTilePosition + 0));
+    sim.currentRoute->catenary->rect.x = (int) -sim.screenPosition + (TILE_WIDTH * (sim.screenTilePosition + 0));
     SDL_RenderCopy(renderer, sim.currentRoute->catenary->sprite_texture, nullptr, &sim.currentRoute->catenary->rect);
-    sim.currentRoute->catenary->rect.x = (int) -sim.screenPosition + (sim.SCREEN_WIDTH * (sim.screenTilePosition + 1));
+    sim.currentRoute->catenary->rect.x = (int) -sim.screenPosition + (TILE_WIDTH * (sim.screenTilePosition + 1));
     SDL_RenderCopy(renderer, sim.currentRoute->catenary->sprite_texture, nullptr, &sim.currentRoute->catenary->rect);
-    sim.currentRoute->catenary->rect.x = (int) -sim.screenPosition + (sim.SCREEN_WIDTH * (sim.screenTilePosition + 2));
+    sim.currentRoute->catenary->rect.x = (int) -sim.screenPosition + (TILE_WIDTH * (sim.screenTilePosition + 2));
     SDL_RenderCopy(renderer, sim.currentRoute->catenary->sprite_texture, nullptr, &sim.currentRoute->catenary->rect);
 
 
-    sim.currentRoute->rail->rect.x = (int) -sim.screenPosition + (sim.SCREEN_WIDTH * (sim.screenTilePosition - 1));
+    sim.currentRoute->rail->rect.x = (int) -sim.screenPosition + (TILE_WIDTH * (sim.screenTilePosition - 1));
     SDL_RenderCopy(renderer, sim.currentRoute->rail->sprite_texture, nullptr, &sim.currentRoute->rail->rect);
-    sim.currentRoute->rail->rect.x = (int) -sim.screenPosition + (sim.SCREEN_WIDTH * (sim.screenTilePosition + 0));
+    sim.currentRoute->rail->rect.x = (int) -sim.screenPosition + (TILE_WIDTH * (sim.screenTilePosition + 0));
     SDL_RenderCopy(renderer, sim.currentRoute->rail->sprite_texture, nullptr, &sim.currentRoute->rail->rect);
-    sim.currentRoute->rail->rect.x = (int) -sim.screenPosition + (sim.SCREEN_WIDTH * (sim.screenTilePosition + 1));
+    sim.currentRoute->rail->rect.x = (int) -sim.screenPosition + (TILE_WIDTH * (sim.screenTilePosition + 1));
     SDL_RenderCopy(renderer, sim.currentRoute->rail->sprite_texture, nullptr, &sim.currentRoute->rail->rect);
-    sim.currentRoute->rail->rect.x = (int) -sim.screenPosition + (sim.SCREEN_WIDTH * (sim.screenTilePosition + 2));
+    sim.currentRoute->rail->rect.x = (int) -sim.screenPosition + (TILE_WIDTH * (sim.screenTilePosition + 2));
     SDL_RenderCopy(renderer, sim.currentRoute->rail->sprite_texture, nullptr, &sim.currentRoute->rail->rect);
 }
 

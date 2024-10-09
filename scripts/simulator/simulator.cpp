@@ -14,7 +14,8 @@
 
 Simulator::Simulator(int SCREEN_WIDTH, int SCREEN_HEIGHT)
     : SCREEN_WIDTH(SCREEN_WIDTH), SCREEN_HEIGHT(SCREEN_HEIGHT), currentRoute(nullptr), running(false) {
-    this->window = SDL_CreateWindow("Train Simulator", 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
+    this->window = SDL_CreateWindow("Train Simulator", 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_RESIZABLE);
+    SDL_MaximizeWindow(this->window);
     this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED);
 
     this->mainFont = TTF_OpenFont("../resources/fonts/Roboto-Black.ttf", 32);
@@ -53,14 +54,19 @@ void Simulator::run(int TICKDELAY) {
         // Render route objects
         this->screenTilePosition = ceil(this->screenPosition / SCREEN_WIDTH);
 
+
         ObjectDrawer::drawTiledMovingBackground(this->renderer, *this);
 
+        ObjectDrawer::draw(this->currentRoute->train, this->renderer);
 
         for (Object *object : this->currentRoute->objectList) {
+            int temp = object->rect.x;
+            object->rect.x -= (int) this->screenPosition;
             ObjectDrawer::draw(object, this->renderer);
+            object->rect.x = temp;
         }
 
-        ObjectDrawer::draw(this->currentRoute->train, this->renderer);
+
 
         this->currentRoute->train->update();
         this->update();
