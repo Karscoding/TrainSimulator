@@ -25,7 +25,11 @@ void AI::run() {
                 }
                 break;
             case Task::DECCELERATE:
-                if (train->speed_in_kmh > 130) {
+                if (train->speed_in_kmh > this->targetSpeed - 5) {
+                    if (train->braking_setting < 2) {
+                        train->increaseBraking();
+                    }
+                } else if (train->speed_in_kmh > this->targetSpeed - 10) {
                     if (train->braking_setting < 3) {
                         train->increaseBraking();
                     }

@@ -20,7 +20,7 @@ int main(int argc, char* args []) {
 
     Simulator sim = Simulator(SCREEN_WIDTH, SCREEN_HEIGHT);
     sim.initialize();
-    AI ai = AI(sim.currentRoute->train, 140);
+    AI ai = AI(sim.currentRoute->train, 100);
 
     std::thread aiThread(&AI::run, &ai);
     sim.run(TICKDELAY);
