@@ -7,7 +7,8 @@
 #include "structs/object.h"
 #include "structs/dimensions.h"
 
-#define TILE_WIDTH 1280
+#define TILE_WIDTH 1920
+#define BVL_WIDTH 1280
 
 void ObjectDrawer::draw(Object *object, SDL_Renderer *renderer) {
     SDL_RenderCopy(renderer, object->sprite_texture, nullptr, &object->rect);
@@ -25,13 +26,13 @@ void ObjectDrawer::drawTiledMovingBackground(SDL_Renderer *renderer, Simulator &
     SDL_RenderCopy(renderer, sim.currentRoute->bg->sprite_texture, nullptr, &sim.currentRoute->bg->rect);
 
 
-    sim.currentRoute->catenary->rect.x = (int) -sim.screenPosition + (TILE_WIDTH * (sim.screenTilePosition - 1));
+    sim.currentRoute->catenary->rect.x = (int) -sim.screenPosition + (BVL_WIDTH * (sim.screenTilePosition - 1));
     SDL_RenderCopy(renderer, sim.currentRoute->catenary->sprite_texture, nullptr, &sim.currentRoute->catenary->rect);
-    sim.currentRoute->catenary->rect.x = (int) -sim.screenPosition + (TILE_WIDTH * (sim.screenTilePosition + 0));
+    sim.currentRoute->catenary->rect.x = (int) -sim.screenPosition + (BVL_WIDTH * (sim.screenTilePosition + 0));
     SDL_RenderCopy(renderer, sim.currentRoute->catenary->sprite_texture, nullptr, &sim.currentRoute->catenary->rect);
-    sim.currentRoute->catenary->rect.x = (int) -sim.screenPosition + (TILE_WIDTH * (sim.screenTilePosition + 1));
+    sim.currentRoute->catenary->rect.x = (int) -sim.screenPosition + (BVL_WIDTH * (sim.screenTilePosition + 1));
     SDL_RenderCopy(renderer, sim.currentRoute->catenary->sprite_texture, nullptr, &sim.currentRoute->catenary->rect);
-    sim.currentRoute->catenary->rect.x = (int) -sim.screenPosition + (TILE_WIDTH * (sim.screenTilePosition + 2));
+    sim.currentRoute->catenary->rect.x = (int) -sim.screenPosition + (BVL_WIDTH * (sim.screenTilePosition + 2));
     SDL_RenderCopy(renderer, sim.currentRoute->catenary->sprite_texture, nullptr, &sim.currentRoute->catenary->rect);
 
 

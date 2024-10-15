@@ -1,8 +1,10 @@
 #include "../simulator/objects/train.h"
+#include "../simulator/objects/signal.h"
 
 enum Task {
     ACCELERATE,
     DECCELERATE,
+    COASTING,
     EMERGENCY,
     SHUNTING,
     PASSENGER_STOP,
@@ -20,5 +22,6 @@ public:
 
     AI(Train *train, float targetSpeed);
     void run();
+    void update();
     void close();
 };

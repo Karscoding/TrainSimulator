@@ -45,6 +45,7 @@ void Train::increasePower() {
 }
 
 void Train::setPower(int value) {
+    if (this->applying_braking) { this->traction_setting = 0; }
     if (value <= 7 && value >= 0) {
         this->traction_setting = value;
     }
@@ -57,6 +58,7 @@ void Train::increaseBraking() {
 }
 
 void Train::setBraking(int value) {
+    if (this->applying_power) { this->braking_setting = 0; }
     if (value <= 7 && value >= 0) {
         this->braking_setting = value;
     }
@@ -79,10 +81,11 @@ void Train::decreaseBraking() {
 
 void Train::resetPowerAndBraking() {
     if (!this->emergency_braking) {
+        this->traction_setting = 0;
+        this->braking_setting = 0;
         this->applying_braking = false;
         this->applying_power = false;
-        this->braking_setting = 0;
-        this->traction_setting = 0;
+
     }
 }
 
@@ -122,7 +125,7 @@ void Train::update(Simulator &sim) {
         sim.currentRoute->passSignal();
     }
 
-    if (this->speed_in_kmh > (float) sim.currentRoute->nextSignal->currentAspect + 5) {
+    if (this->speed_in_kmh > (float) sim.currentRoute->nextSignal->currentAspect + 5 && !this->applying_braking) {
         this->speeding = true;
     } else {
         this->speeding = false;
