@@ -61,7 +61,7 @@ public:
 
     void roll();
 
-    void update(Route &route);
+    void update(Simulator &sim);
 };
 
 

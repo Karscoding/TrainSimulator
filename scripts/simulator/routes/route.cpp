@@ -22,5 +22,9 @@ void Route::update() {
 
 void Route::passSignal() {
     this->nextSignal = this->signalList.front();
-    this->signalList.pop_front();
+    if (this->signalList.size() == 1) {
+        return;
+    } else {
+        this->signalList.pop_front();
+    }
 }

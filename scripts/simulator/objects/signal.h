@@ -38,7 +38,7 @@ public:
     bool broken = false;
 
     int currentAspect;
-    static Signal* createSignal(Simulator &sim, Vector2 position, int aspect);
+    static Signal* createSignal(Simulator &sim, int xPosition, int aspect);
 };
 
 

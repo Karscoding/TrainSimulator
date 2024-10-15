@@ -116,10 +116,25 @@ void Train::roll() {
 }
 
 
-void Train::update(Route &route) {
-    this->nextSignal = route.nextSignal;
-    if (this->nextSignal->position.x < this->position.x) {
-        route.passSignal();
+void Train::update(Simulator &sim) {
+    this->nextSignal = sim.currentRoute->nextSignal;
+    if (this->nextSignal->position.x < (int) sim.screenPosition + 400) {
+        sim.currentRoute->passSignal();
+    }
+
+    if (this->speed_in_kmh > (float) sim.currentRoute->nextSignal->currentAspect + 5) {
+        this->speeding = true;
+    } else {
+        this->speeding = false;
+    }
+
+    if (this->speeding) {
+        this->speeding_timer++;
+        if (this->speeding_timer > this->speeding_threshold) {
+            this->applyEmergencyBraking();
+        }
+    } else {
+        this->speeding_timer = 0;
     }
 
     if (this->traction_setting > 0) {

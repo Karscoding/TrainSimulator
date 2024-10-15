@@ -68,7 +68,7 @@ void Simulator::run(int TICKDELAY) {
 
 
 
-        this->currentRoute->train->update(*this->currentRoute);
+        this->currentRoute->train->update(*this);
         this->update();
 
 
