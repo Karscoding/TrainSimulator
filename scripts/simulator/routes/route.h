@@ -8,11 +8,15 @@
 #include <list>
 
 struct Object;
+class Signal;
 class Train;
 
 struct Route {
 public:
     std::list<Object*> objectList;
+    std::list<Signal*> signalList;
+
+    Signal *nextSignal;
 
     // Background Objects
     Object *bg;
@@ -21,6 +25,10 @@ public:
 
     Train *train;
     void addObject(Object *object);
+    void addSignal(Signal *signal);
+
+    void passSignal();
+
     void update();
 };
 

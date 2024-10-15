@@ -22,7 +22,7 @@ int main(int argc, char* args []) {
     sim.initialize();
 
     AI ai = AI(sim.currentRoute->train, 40);
-    std::thread aiThread(&AI::run, &ai);
+//    std::thread aiThread(&AI::run, &ai);
 
     sim.run(TICKDELAY);
 

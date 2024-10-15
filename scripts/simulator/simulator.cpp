@@ -8,6 +8,7 @@
 #include "simulator.h"
 #include "objectDrawer.h"
 #include "objects/train.h"
+#include "objects/signal.h"
 #include <string>
 #include "routes/routeTest.h"
 #include "textDrawer.h"
@@ -19,7 +20,6 @@ Simulator::Simulator(int SCREEN_WIDTH, int SCREEN_HEIGHT)
     this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED);
 
     this->mainFont = TTF_OpenFont("../resources/fonts/Roboto-Black.ttf", 32);
-
 }
 
 void Simulator::initialize() {
@@ -68,7 +68,7 @@ void Simulator::run(int TICKDELAY) {
 
 
 
-        this->currentRoute->train->update();
+        this->currentRoute->train->update(*this->currentRoute);
         this->update();
 
 
@@ -153,6 +153,10 @@ void Simulator::textDrawing() const {
     std::string message = std::to_string(this->currentRoute->train->speed_in_kmh);
     message = message.substr(0, 4);
     TextDrawer::drawTextFromString(*this->renderer, &message, this->mainFont, Vector2(150, 80), color);
+
+    TextDrawer::drawTextFromString(*this->renderer, new std::string("Speed Limit: "), this->mainFont, Vector2(15, 110), color);
+    std::string max_speed = std::to_string(this->currentRoute->train->nextSignal->currentAspect);
+    TextDrawer::drawTextFromString(*this->renderer, &max_speed, this->mainFont, Vector2(200, 110), color);
 }
 
 void Simulator::debugLog() const {

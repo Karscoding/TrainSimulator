@@ -19,6 +19,7 @@ public:
     float traction_power;
     float resistance;
 
+    Signal *nextSignal;
     float distance_next_signal = 0;
 
     int train_pos_offset;
@@ -60,7 +61,7 @@ public:
 
     void roll();
 
-    void update();
+    void update(Route &route);
 };
 
 

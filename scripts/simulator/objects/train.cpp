@@ -3,6 +3,7 @@
 //
 
 #include "train.h"
+#include "signal.h"
 
 // Private
 void Train::applyPower(float value) {
@@ -115,7 +116,12 @@ void Train::roll() {
 }
 
 
-void Train::update() {
+void Train::update(Route &route) {
+    this->nextSignal = route.nextSignal;
+    if (this->nextSignal->position.x < this->position.x) {
+        route.passSignal();
+    }
+
     if (this->traction_setting > 0) {
         this->applyPower((float) this->traction_setting / 10);
     } else if (this->braking_setting > 0) {
