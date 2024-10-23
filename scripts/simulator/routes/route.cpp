@@ -21,7 +21,9 @@ void Route::update() {
 }
 
 void Route::passSignal() {
+    this->previousSignal = this->nextSignal;
     this->nextSignal = this->signalList.front();
+
     if (this->signalList.size() == 1) {
         return;
     } else {

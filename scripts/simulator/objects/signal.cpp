@@ -23,6 +23,10 @@ Signal* Signal::createSignal(Simulator &sim, int xPosition, int aspect) {
             image_path = "../resources/Signals/LightSignals/YellowTall.png";
             yPosition = 300;
             break;
+        case SignAspects::VMAX_130:
+            image_path = "../resources/Signals/Signs/130UpSign.png";
+            yPosition = 600;
+            break;
         case SignAspects::VMAX_40:
             image_path = "../resources/Signals/Signs/40Sign.png";
             yPosition = 600;

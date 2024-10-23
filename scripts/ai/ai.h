@@ -3,9 +3,11 @@
 
 enum Task {
     ACCELERATE,
-    DECCELERATE,
+    DECCELERATE_TO_LIMIT,
+    DECCELERATE_TO_STOP,
     COASTING,
     EMERGENCY,
+    RECOVERY, // Recovering from Emergency Stop
     SHUNTING,
     PASSENGER_STOP,
     WAITING,
@@ -17,11 +19,13 @@ private:
     int currentTask = Task::ACCELERATE;
 
 public:
-    float targetSpeed;
+    float maxSpeed;
     Train *train;
 
     AI(Train *train, float targetSpeed);
     void run();
     void update();
+    void decideTask();
+    void doTask();
     void close();
 };

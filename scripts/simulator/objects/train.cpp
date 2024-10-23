@@ -85,7 +85,6 @@ void Train::resetPowerAndBraking() {
         this->braking_setting = 0;
         this->applying_braking = false;
         this->applying_power = false;
-
     }
 }
 
@@ -105,7 +104,7 @@ void Train::applyEmergencyBraking() {
     this->emergency_braking = true;
 }
 
-
+// Applying resistance
 void Train::roll() {
     this->applying_braking = false;
     this->applying_power = false;
@@ -120,17 +119,40 @@ void Train::roll() {
 
 
 void Train::update(Simulator &sim) {
+    if (sim.currentRoute->previousSignal != nullptr) {
+        this->previousSignal = sim.currentRoute->previousSignal;
+        this->current_vmax = this->previousSignal->currentAspect;
+
+        // Speeding checks
+        if (this->speed_in_kmh > (float) sim.currentRoute->previousSignal->currentAspect + 5 && !this->applying_braking) {
+            this->speeding = true;
+        } else {
+            this->speeding = false;
+        }
+
+    } else if (sim.currentRoute->nextSignal != nullptr) {
+        this->current_vmax = sim.currentRoute->startAspect;
+        this->nextSignal = sim.currentRoute->nextSignal;
+    } else {
+        this->current_vmax = sim.currentRoute->startAspect;
+        return;
+    }
+
     this->nextSignal = sim.currentRoute->nextSignal;
+
+    // Reset emergency_braking boolean
+    if (this->emergency_braking && this->speed_in_kmh == 0 && this->braking_setting == 0) {
+        this->emergency_braking = false;
+    }
+
+    // Pass signal
     if (this->nextSignal->position.x < (int) sim.screenPosition + 400) {
         sim.currentRoute->passSignal();
     }
 
-    if (this->speed_in_kmh > (float) sim.currentRoute->nextSignal->currentAspect + 5 && !this->applying_braking) {
-        this->speeding = true;
-    } else {
-        this->speeding = false;
-    }
 
+
+    // Timer for emergency brake upon speeding
     if (this->speeding) {
         this->speeding_timer++;
         if (this->speeding_timer > this->speeding_threshold) {
@@ -140,14 +162,24 @@ void Train::update(Simulator &sim) {
         this->speeding_timer = 0;
     }
 
+    // Applying forces
     if (this->traction_setting > 0) {
         this->applyPower((float) this->traction_setting / 10);
-    } else if (this->braking_setting > 0) {
-        this->applyBraking((float) this->braking_setting / 4);
     } else {
+        this->applying_power = false;
+    }
+
+    if (this->braking_setting > 0) {
+            this->applyBraking((float) this->braking_setting / 4);
+    } else {
+        this->applying_braking = false;
+    }
+
+    if (this->braking_setting == 0 && this->traction_setting == 0) {
         this->roll();
     }
 
+    // Speed to km/h conversion
     if (this->speed != 0) {
         this->speed_in_kmh = this->speed * 6.5f;
     } else {

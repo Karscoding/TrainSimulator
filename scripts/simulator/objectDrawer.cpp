@@ -26,13 +26,14 @@ void ObjectDrawer::drawTiledMovingBackground(SDL_Renderer *renderer, Simulator &
     SDL_RenderCopy(renderer, sim.currentRoute->bg->sprite_texture, nullptr, &sim.currentRoute->bg->rect);
 
 
-    sim.currentRoute->catenary->rect.x = (int) -sim.screenPosition + (BVL_WIDTH * (sim.screenTilePosition - 1));
+    int screenSmallTilePosition = ceil(sim.screenPosition / BVL_WIDTH);
+    sim.currentRoute->catenary->rect.x = (int) -sim.screenPosition + (BVL_WIDTH * (screenSmallTilePosition - 1));
     SDL_RenderCopy(renderer, sim.currentRoute->catenary->sprite_texture, nullptr, &sim.currentRoute->catenary->rect);
-    sim.currentRoute->catenary->rect.x = (int) -sim.screenPosition + (BVL_WIDTH * (sim.screenTilePosition + 0));
+    sim.currentRoute->catenary->rect.x = (int) -sim.screenPosition + (BVL_WIDTH * (screenSmallTilePosition + 0));
     SDL_RenderCopy(renderer, sim.currentRoute->catenary->sprite_texture, nullptr, &sim.currentRoute->catenary->rect);
-    sim.currentRoute->catenary->rect.x = (int) -sim.screenPosition + (BVL_WIDTH * (sim.screenTilePosition + 1));
+    sim.currentRoute->catenary->rect.x = (int) -sim.screenPosition + (BVL_WIDTH * (screenSmallTilePosition + 1));
     SDL_RenderCopy(renderer, sim.currentRoute->catenary->sprite_texture, nullptr, &sim.currentRoute->catenary->rect);
-    sim.currentRoute->catenary->rect.x = (int) -sim.screenPosition + (BVL_WIDTH * (sim.screenTilePosition + 2));
+    sim.currentRoute->catenary->rect.x = (int) -sim.screenPosition + (BVL_WIDTH * (screenSmallTilePosition + 2));
     SDL_RenderCopy(renderer, sim.currentRoute->catenary->sprite_texture, nullptr, &sim.currentRoute->catenary->rect);
 
 

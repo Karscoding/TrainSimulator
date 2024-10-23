@@ -19,7 +19,8 @@ public:
     float traction_power;
     float resistance;
 
-    Signal *nextSignal;
+    Signal *previousSignal = nullptr;
+    Signal *nextSignal = nullptr;
     float distance_next_signal = 0;
 
     int train_pos_offset;

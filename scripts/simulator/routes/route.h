@@ -16,7 +16,10 @@ public:
     std::list<Object*> objectList;
     std::list<Signal*> signalList;
 
-    Signal *nextSignal;
+    Signal *previousSignal = nullptr;
+    Signal *nextSignal = nullptr;
+
+    int startAspect;
 
     // Background Objects
     Object *bg;

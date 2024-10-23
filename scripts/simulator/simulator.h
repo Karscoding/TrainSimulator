@@ -21,6 +21,7 @@ public:
     SDL_Renderer *renderer;
 
     Route *currentRoute;
+    Train *train;
 
     TTF_Font *mainFont;
 

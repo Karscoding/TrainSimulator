@@ -26,6 +26,7 @@ enum LightAspects {
 enum SignAspects {
     VMAX_40 = 40,
     VMAX_80 = 80,
+    VMAX_130 = 130,
     VMAX_140 = 140,
     UPC_40 = 41,
     UPC_80 = 81,
