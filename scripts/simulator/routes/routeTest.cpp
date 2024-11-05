@@ -23,11 +23,31 @@ RouteTest::RouteTest(Simulator &sim) {
     this->addObject(sign);
     this->addSignal(sign);
 
-    auto *sign_130 = Signal::createSignal(sim, 8000, SignAspects::VMAX_130);
+    auto *yellow_signal = Signal::createSignal(sim, 4500, LightAspects::YELLOW);
+    this->addObject(yellow_signal);
+    this->addSignal(yellow_signal);
+
+    auto *red_signal = Signal::createSignal(sim, 8500, LightAspects::RED);
+    this->addObject(red_signal);
+    this->addSignal(red_signal);
+
+    auto *sign_130 = Signal::createSignal(sim, 10000, SignAspects::VMAX_130);
     this->addObject(sign_130);
     this->addSignal(sign_130);
 
-    auto *yellow_signal = Signal::createSignal(sim, 16000, LightAspects::YELLOW);
-    this->addObject(yellow_signal);
-    this->addSignal(yellow_signal);
+    auto *green_signal = Signal::createSignal(sim, 14500, LightAspects::GREEN);
+    this->addObject(green_signal);
+    this->addSignal(green_signal);
+
+    auto *green_signal2 = Signal::createSignal(sim, 18500, LightAspects::GREEN);
+    this->addObject(green_signal2);
+    this->addSignal(green_signal2);
+
+    auto *green_signal3 = Signal::createSignal(sim, 22500, LightAspects::GREEN);
+    this->addObject(green_signal3);
+    this->addSignal(green_signal3);
+
+    auto *red_signal_oops = Signal::createSignal(sim, 26500, LightAspects::RED);
+    this->addObject(red_signal_oops);
+    this->addSignal(red_signal_oops);
 }

@@ -16,7 +16,8 @@ enum Task {
 class AI {
 private:
     bool running = false;
-    int currentTask = Task::ACCELERATE;
+    int currentTask = Task::WAITING;
+    int brakeFactor;
 
 public:
     float maxSpeed;

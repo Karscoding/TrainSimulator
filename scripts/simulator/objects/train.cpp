@@ -58,6 +58,11 @@ void Train::increaseBraking() {
 }
 
 void Train::setBraking(int value) {
+    if (this->emergency_braking) {
+        if (this->speed_in_kmh != 0) {
+            return;
+        }
+    }
     if (this->applying_power) { this->braking_setting = 0; }
     if (value <= 7 && value >= 0) {
         this->braking_setting = value;
@@ -139,6 +144,7 @@ void Train::update(Simulator &sim) {
     }
 
     this->nextSignal = sim.currentRoute->nextSignal;
+    this->distance_next_signal = (float) sim.currentRoute->nextSignal->position.x - sim.screenPosition;
 
     // Reset emergency_braking boolean
     if (this->emergency_braking && this->speed_in_kmh == 0 && this->braking_setting == 0) {
@@ -147,7 +153,14 @@ void Train::update(Simulator &sim) {
 
     // Pass signal
     if (this->nextSignal->position.x < (int) sim.screenPosition + 400) {
+        if (this->nextSignal->currentAspect == 0) {
+            this->applyEmergencyBraking();
+        }
         sim.currentRoute->passSignal();
+    }
+
+    if (this->nextSignal->currentAspect == LightAspects::RED && this->speed_in_kmh == 0) {
+        sim.currentRoute->changeNextSignal(sim, LightAspects::GREEN);
     }
 
 

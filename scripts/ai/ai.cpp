@@ -16,7 +16,6 @@ void AI::run() {
 }
 
 void AI::update() {
-    this->decideTask();
     switch (this->currentTask) {
         case Task::ACCELERATE:
             train->setBraking(0);
@@ -36,6 +35,8 @@ void AI::update() {
             break;
         case Task::COASTING:
             if (train->speeding) {
+                currentTask = Task::DECCELERATE_TO_LIMIT;
+            } else if (train->speed_in_kmh > this->maxSpeed + 5) {
                 currentTask = Task::DECCELERATE_TO_LIMIT;
             } else if (train->speed_in_kmh > this->maxSpeed + 2) {
                 train->setBraking(0);
@@ -60,16 +61,25 @@ void AI::update() {
             break;
         case Task::DECCELERATE_TO_STOP:
             train->setPower(0);
-            if (train->speed_in_kmh > this->maxSpeed - 5) {
-                train->setBraking(2);
-            } else if (train->speed_in_kmh > this->maxSpeed - 10) {
-                train->setBraking(3);
-            } else if (train->speed_in_kmh > 10) {
+            brakeFactor = train->speed_in_kmh * (train->distance_next_signal / 1000);
+            if (brakeFactor > 300) {
+                train->applyEmergencyBraking();
+            } else if (brakeFactor > 250) {
+                train->setBraking(7);
+            } else if (brakeFactor > 200) {
+                train->setBraking(6);
+            } else if (brakeFactor > 150) {
                 train->setBraking(5);
-            } else if (train->speed_in_kmh > 5){
-                train->setBraking(2);
-            } else if (train->speed_in_kmh > 2) {
-                train->setBraking(1);
+            } else if (brakeFactor > 100) {
+                train->setBraking(5);
+            } else {
+                if (train->speed_in_kmh < 20 && train->distance_next_signal > 2000) {
+                    train->setBraking(0);
+                } else if (train->speed_in_kmh > 0 && train->distance_next_signal < 1000) {
+                    train->setBraking(3);
+                } else {
+                    train->setBraking(2);
+                }
             }
             break;
         case Task::RECOVERY:
@@ -80,18 +90,42 @@ void AI::update() {
             break;
     }
 
+    this->decideTask();
+
     std::this_thread::sleep_for(std::chrono::milliseconds(MS_DELAY));
 }
 
 void AI::decideTask() {
-    if (train->emergency_braking) {
-        currentTask = Task::RECOVERY;
-    } else if (train->speed_in_kmh == 0) {
-        currentTask = Task::ACCELERATE;
-    } else if (train->speeding) {
-        currentTask = Task::DECCELERATE_TO_LIMIT;
+    if (train->nextSignal != nullptr) {
+        if (train->previousSignal != nullptr) {
+            this->maxSpeed = (float) train->previousSignal->currentAspect;
+        }
+        auto nextLimit = train->nextSignal->currentAspect;
+        if (currentTask == Task::DECCELERATE_TO_STOP && train->nextSignal->currentAspect != LightAspects::RED) {
+            currentTask = Task::ACCELERATE;
+        } else if (nextLimit == LightAspects::RED) {
+            this->maxSpeed = 0;
+            currentTask = Task::DECCELERATE_TO_STOP;
+        } else if (train->speed_in_kmh > (float) nextLimit + 5 && train->distance_next_signal < (train->speed_in_kmh - (float) nextLimit) * 150) {
+            this->maxSpeed = (float) nextLimit;
+            currentTask = Task::DECCELERATE_TO_LIMIT;
+        } else if (train->speed_in_kmh < this->maxSpeed - 10) {
+            currentTask = Task::ACCELERATE;
+        } else if (train->speed_in_kmh == 0) {
+            currentTask = Task::WAITING;
+        } else {
+            currentTask = Task::COASTING;
+        }
     } else {
-        currentTask = Task::ACCELERATE;
+        if (train->emergency_braking) {
+            currentTask = Task::RECOVERY;
+        } else if (train->speed_in_kmh == 0 && !train->doors_opened) {
+            currentTask = Task::ACCELERATE;
+        } else if (train->speed_in_kmh > this->maxSpeed + 5 || train->speeding) {
+            currentTask = Task::DECCELERATE_TO_LIMIT;
+        } else {
+            currentTask = Task::ACCELERATE;
+        }
     }
 }
 

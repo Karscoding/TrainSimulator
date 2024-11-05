@@ -35,11 +35,13 @@ enum SignAspects {
 class Signal : public Object {
 private:
     Signal(Simulator &sim, const char *image_path, Vector2 position, int aspect);
+    void getImagePath(int aspect);
 public:
     bool broken = false;
 
     int currentAspect;
     static Signal* createSignal(Simulator &sim, int xPosition, int aspect);
+    void changeAspect(int aspect);
 };
 
 

@@ -81,7 +81,6 @@ void Simulator::run(int TICKDELAY) {
             object->rect.x = temp;
         }
 
-
         // Update functions
         this->train->update(*this);
         this->update();

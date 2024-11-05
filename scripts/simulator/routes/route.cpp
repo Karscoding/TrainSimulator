@@ -3,6 +3,7 @@
 //
 
 #include "route.h"
+#include "../objects/signal.h"
 
 void Route::addObject(Object *object) {
     this->objectList.push_back(object);
@@ -29,4 +30,12 @@ void Route::passSignal() {
     } else {
         this->signalList.pop_front();
     }
+}
+
+void Route::changeNextSignal(Simulator &sim, int aspect) {
+    this->signalList.remove(this->nextSignal);
+    this->objectList.remove(this->nextSignal);
+    this->nextSignal = Signal::createSignal(sim, this->nextSignal->position.x, aspect);
+    this->addSignal(this->nextSignal);
+    this->addObject(this->nextSignal);
 }

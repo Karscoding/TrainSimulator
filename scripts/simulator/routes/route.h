@@ -9,6 +9,7 @@
 
 struct Object;
 class Signal;
+class Simulator;
 class Train;
 
 struct Route {
@@ -31,6 +32,8 @@ public:
     void addSignal(Signal *signal);
 
     void passSignal();
+
+    void changeNextSignal(Simulator &sim, int aspect);
 
     void update();
 };
