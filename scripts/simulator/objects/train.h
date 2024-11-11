@@ -30,6 +30,8 @@ public:
 
     bool doors_opened = false;
 
+    bool atStation = false;
+
     bool emergency_braking = false;
     bool speeding = false;
     int speeding_timer = 0;

@@ -5,6 +5,7 @@
 #include "routeTest.h"
 #include "../structs/object.h"
 #include "../objects/train.h"
+#include "../objects/station.h"
 #include "../objects/signal.h"
 
 RouteTest::RouteTest(Simulator &sim) {
@@ -22,6 +23,9 @@ RouteTest::RouteTest(Simulator &sim) {
     auto *sign = Signal::createSignal(sim, 700, SignAspects::VMAX_40);
     this->addObject(sign);
     this->addSignal(sign);
+
+    auto *station = new Station(sim, -300, 1);
+    this->addStation(station);
 
     auto *yellow_signal = Signal::createSignal(sim, 4500, LightAspects::YELLOW);
     this->addObject(yellow_signal);

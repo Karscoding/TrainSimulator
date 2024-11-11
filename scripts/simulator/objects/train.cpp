@@ -4,6 +4,7 @@
 
 #include "train.h"
 #include "signal.h"
+#include "station.h"
 
 // Private
 void Train::applyPower(float value) {
@@ -161,6 +162,15 @@ void Train::update(Simulator &sim) {
 
     if (this->nextSignal->currentAspect == LightAspects::RED && this->speed_in_kmh == 0) {
         sim.currentRoute->changeNextSignal(sim, LightAspects::GREEN);
+    }
+
+
+    for (Station *station : sim.currentRoute->stationList) {
+        if (this->position.x + train_pos_offset > station->beginPosition && this->position.x + train_pos_offset <= station->stoppingPosition) {
+            atStation = true;
+        } else {
+            atStation = false;
+        }
     }
 
 

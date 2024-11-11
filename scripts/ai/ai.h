@@ -11,12 +11,13 @@ enum Task {
     SHUNTING,
     PASSENGER_STOP,
     WAITING,
+    THINKING,
 };
 
 class AI {
 private:
     bool running = false;
-    int currentTask = Task::WAITING;
+    int currentTask = Task::THINKING;
     int brakeFactor;
 
 public:

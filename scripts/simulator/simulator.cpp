@@ -9,10 +9,13 @@
 #include "objectDrawer.h"
 #include "objects/train.h"
 #include "objects/signal.h"
+#include "objects/station.h"
 #include <cmath>
 #include <string>
 #include "routes/routeTest.h"
 #include "textDrawer.h"
+
+#define COLOR_BLACK SDL_Color(0, 0, 0, 0)
 
 Simulator::Simulator(int SCREEN_WIDTH, int SCREEN_HEIGHT)
     : SCREEN_WIDTH(SCREEN_WIDTH), SCREEN_HEIGHT(SCREEN_HEIGHT), currentRoute(nullptr), running(false), train(nullptr) {
@@ -81,6 +84,16 @@ void Simulator::run(int TICKDELAY) {
             object->rect.x = temp;
         }
 
+        for (Station *station : this->currentRoute->stationList) {
+            int temp = station->rect.x;
+            for (int i = 0; i < station->tileSpan; i++) {
+                station->rect.x -= (int) this->screenPosition;
+                station->rect.x += i * 1280;
+                ObjectDrawer::draw(station, this->renderer);
+            }
+            station->rect.x = temp;
+        }
+
         // Update functions
         this->train->update(*this);
         this->update();
@@ -146,7 +159,7 @@ void Simulator::textDrawing() const {
     if (this->train->traction_setting > 0) {
         color = SDL_Color(0, 153, 51, 255);
     } else {
-        color = SDL_Color(0, 0, 0, 0);
+        color = COLOR_BLACK;
     }
 
     // Rendering Traction-setting information
@@ -161,7 +174,7 @@ void Simulator::textDrawing() const {
     if (this->train->braking_setting > 0) {
         color = SDL_Color(204, 51, 0, 255);
     } else {
-        color = SDL_Color(0, 0, 0, 0);
+        color = COLOR_BLACK;
     }
 
     // Rendering Braking-setting information
@@ -176,7 +189,7 @@ void Simulator::textDrawing() const {
     if (this->train->speeding) {
         color = SDL_Color(204, 51, 0, 255);
     } else {
-        color = SDL_Color(0, 0, 0, 0);
+        color = COLOR_BLACK;
     }
 
     // Rendering Current Speed
@@ -194,6 +207,15 @@ void Simulator::textDrawing() const {
         max_speed = std::to_string(this->train->current_vmax);
     }
     TextDrawer::drawTextFromString(*this->renderer, &max_speed, this->mainFont, Vector2(200, 110), color);
+
+
+    if (this->train->doors_opened) {
+        color = SDL_Color(0, 153, 51, 255);
+    } else {
+        color = COLOR_BLACK;
+    }
+    TextDrawer::drawTextFromString(*this->renderer, new std::string("Doors"), this->mainFont, Vector2(15, 140), color);
+
 }
 
 // Not currently used

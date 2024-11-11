@@ -16,6 +16,10 @@ void Route::addSignal(Signal *signal) {
     this->signalList.push_back(signal);
 }
 
+void Route::addStation(Station *station) {
+    this->stationList.push_back(station);
+}
+
 
 void Route::update() {
 

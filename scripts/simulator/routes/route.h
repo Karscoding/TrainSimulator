@@ -9,6 +9,7 @@
 
 struct Object;
 class Signal;
+class Station;
 class Simulator;
 class Train;
 
@@ -16,6 +17,7 @@ struct Route {
 public:
     std::list<Object*> objectList;
     std::list<Signal*> signalList;
+    std::list<Station*> stationList;
 
     Signal *previousSignal = nullptr;
     Signal *nextSignal = nullptr;
@@ -30,6 +32,7 @@ public:
     Train *train;
     void addObject(Object *object);
     void addSignal(Signal *signal);
+    void addStation(Station *station);
 
     void passSignal();
 

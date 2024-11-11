@@ -3,6 +3,7 @@
 #include <thread>
 
 #define MS_DELAY 100
+#define STOP_TIME 5
 
 AI::AI(Train *train, float maxSpeed)
     : train(train), maxSpeed(maxSpeed) {}
@@ -88,6 +89,10 @@ void AI::update() {
                 this->decideTask();
             }
             break;
+        case Task::PASSENGER_STOP:
+            train->openDoors();
+            std::this_thread::sleep_for(std::chrono::seconds(STOP_TIME));
+            train->closeDoors();
     }
 
     this->decideTask();
@@ -96,7 +101,15 @@ void AI::update() {
 }
 
 void AI::decideTask() {
-    if (train->nextSignal != nullptr) {
+    if (train->atStation) {
+        if (currentTask == Task::PASSENGER_STOP) {
+            currentTask = Task::ACCELERATE;
+        } else if (train->speed_in_kmh > 0) {
+            currentTask = Task::DECCELERATE_TO_STOP;
+        } else {
+            currentTask = Task::PASSENGER_STOP;
+        }
+    } else if (train->nextSignal != nullptr) {
         if (train->previousSignal != nullptr) {
             this->maxSpeed = (float) train->previousSignal->currentAspect;
         }
