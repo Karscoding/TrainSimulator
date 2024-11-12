@@ -16,7 +16,8 @@ add_executable(TrainSimulator scripts/simulator/simulator.cpp
         scripts/simulator/objects/train.cpp
         scripts/ai/ai.cpp
         scripts/simulator/objects/signal.cpp
-        scripts/simulator/objects/station.cpp)
+        scripts/simulator/objects/station.cpp
+        scripts/simulator/placementScreen.cpp)
 
 # --- SDL2 SETUP ---
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)

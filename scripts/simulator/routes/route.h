@@ -12,6 +12,7 @@ class Signal;
 class Station;
 class Simulator;
 class Train;
+class PlacementScreen;
 
 struct Route {
 public:
@@ -33,6 +34,8 @@ public:
     void addObject(Object *object);
     void addSignal(Signal *signal);
     void addStation(Station *station);
+
+    static Route* createRouteBasedOnTiles(Simulator &sim, PlacementScreen *placementScreen);
 
     void passSignal();
 

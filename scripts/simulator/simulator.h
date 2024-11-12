@@ -9,6 +9,13 @@
 #include <SDL.h>
 
 #include "routes/route.h"
+#include "placementScreen.h"
+
+enum Screens {
+    PLACEMENT,
+    OPTIONS,
+    DRIVING
+};
 
 // Is essentially a Main class with more appropriate naming
 class Simulator {
@@ -19,6 +26,10 @@ public:
     int screenTilePosition{};
     SDL_Window *window;
     SDL_Renderer *renderer;
+
+    PlacementScreen *placementScreen;
+
+    int currentScreen = Screens::PLACEMENT;
 
     Route *currentRoute;
     Train *train;
@@ -32,10 +43,12 @@ public:
     void initialize();
     void run(int TICKDELAY);
 
-    void handleInput(SDL_Event &event) const;
+    void handleInput(SDL_Event &event);
 
     void textDrawing() const;
     void debugLog() const;
+
+    void drawTiles();
 
     bool running;
 };
