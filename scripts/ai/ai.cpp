@@ -111,7 +111,7 @@ void AI::decideTask() {
         }
     } else if (train->nextSignal != nullptr) {
         if (train->previousSignal != nullptr) {
-            this->maxSpeed = (float) train->previousSignal->currentAspect;
+            this->maxSpeed = (float) train->current_vmax;
         }
         auto nextLimit = train->nextSignal->currentAspect;
         if (currentTask == Task::DECCELERATE_TO_STOP && train->nextSignal->currentAspect != LightAspects::RED) {

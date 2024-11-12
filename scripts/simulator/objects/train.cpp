@@ -127,7 +127,10 @@ void Train::roll() {
 void Train::update(Simulator &sim) {
     if (sim.currentRoute->previousSignal != nullptr) {
         this->previousSignal = sim.currentRoute->previousSignal;
-        this->current_vmax = this->previousSignal->currentAspect;
+        if (this->current_vmax > this->previousSignal->currentAspect || this->current_vmax == 0) {
+            this->current_vmax = this->previousSignal->currentAspect;
+        }
+
 
         // Speeding checks
         if (this->speed_in_kmh > (float) sim.currentRoute->previousSignal->currentAspect + 5 && !this->applying_braking) {
