@@ -94,18 +94,18 @@ void Simulator::run(int TICKDELAY) {
                 ObjectDrawer::draw(object, this->renderer);
                 object->rect.x = temp;
             }
-
-            for (Station *station : this->currentRoute->stationList) {
-                int temp = station->rect.x;
-                station->rect.x -= (int) this->screenPosition;
-                for (int i = 0; i < station->tileSpan; i++) {
-                    int temp2 = station->rect.x;
-                    station->rect.x += i * 1280;
-                    ObjectDrawer::draw(station, this->renderer);
-                    station->rect.x = temp2;
-                }
-                station->rect.x = temp;
-            }
+//
+//            for (Station *station : this->currentRoute->stationList) {
+//                int temp = station->rect.x;
+//                station->rect.x -= (int) this->screenPosition;
+//                for (int i = 0; i < station->tileSpan; i++) {
+//                    int temp2 = station->rect.x;
+//                    station->rect.x += i * 1280;
+//                    ObjectDrawer::draw(station, this->renderer);
+//                    station->rect.x = temp2;
+//                }
+//                station->rect.x = temp;
+//            }
 
             // Update functions
             this->train->update(*this);
@@ -169,6 +169,9 @@ void Simulator::handleInput(SDL_Event &event) {
                     currentScreen = Screens::DRIVING;
                 } else if (this->placementScreen->selected == -1) {
                     this->placementScreen->selected = (int) event.key.keysym.sym - 48;
+                    if (this->placementScreen->selected == 0) {
+                        this->placementScreen->selected = 10;
+                    }
                     this->currentScreen = Screens::OPTIONS;
                 } else {
                     switch (event.key.keysym.sym) {
@@ -193,8 +196,12 @@ void Simulator::handleInput(SDL_Event &event) {
                                     *this, (this->placementScreen->selected * 4000) - 4000, SignAspects::VMAX_130));
                             break;
                         case SDLK_6:
-                            this->placementScreen->stationTiles.insert_or_assign(this->placementScreen->selected, new Station(
-                                    *this, (this->placementScreen->selected * 4000) - 3500, 3));
+                            if (this->placementScreen->stationTiles.find(this->placementScreen->selected) == this->placementScreen->stationTiles.end()) {
+                                this->placementScreen->stationTiles.insert_or_assign(this->placementScreen->selected, new Station(
+                                        *this, (this->placementScreen->selected * 4000) - 3500, 3));
+                            } else {
+                                this->placementScreen->stationTiles.erase(this->placementScreen->selected);
+                            }
                             break;
                     }
                     this->placementScreen->selected = -1;
@@ -206,7 +213,7 @@ void Simulator::handleInput(SDL_Event &event) {
 }
 
 void Simulator::drawTiles() {
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 11; i++) {
         if (!placementScreen->lightSignalTiles.empty()) {
             if (placementScreen->lightSignalTiles.find(i) != placementScreen->lightSignalTiles.end()) {
                 Object object = *this->placementScreen->lightSignalTiles.at(i);
@@ -324,6 +331,13 @@ void Simulator::textDrawing() const {
         color = COLOR_BLACK;
     }
     TextDrawer::drawTextFromString(*this->renderer, new std::string("Doors"), this->mainFont, Vector2(15, 140), color);
+
+
+    color = COLOR_BLACK;
+    TextDrawer::drawTextFromString(*this->renderer,new std::string("Distance next stop: "),this->mainFont,Vector2(15, 170), color);
+    message = std::to_string(this->train->distance_next_station_end);
+    message = message.substr(0, 5);
+    TextDrawer::drawTextFromString(*this->renderer, &message, this->mainFont, Vector2(300, 170), color);
 }
 
 // Not currently used

@@ -23,6 +23,10 @@ public:
     Signal *nextSignal = nullptr;
     float distance_next_signal = 0;
 
+    Station *nextStation = nullptr;
+    float distance_next_station = 10000;
+    float distance_next_station_end = 10000;
+
     int train_pos_offset;
 
     bool applying_power = false;
@@ -31,6 +35,7 @@ public:
     bool doors_opened = false;
 
     bool atStation = false;
+    bool stationComplete = false;
 
     bool emergency_braking = false;
     bool speeding = false;
@@ -44,7 +49,7 @@ public:
 
     int current_vmax = 0;
 
-    int previous_vmax = 0;
+    int segment_vmax = 40;
 
     Train(Simulator &sim, const char *image_path, Vector2 position, float braking_power, float traction_power, float resistance);
 

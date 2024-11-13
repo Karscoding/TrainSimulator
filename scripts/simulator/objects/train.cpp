@@ -102,6 +102,7 @@ void Train::openDoors() {
 
 void Train::closeDoors() {
     this->doors_opened = false;
+    this->stationComplete = true;
 }
 
 void Train::applyEmergencyBraking() {
@@ -127,10 +128,22 @@ void Train::roll() {
 void Train::update(Simulator &sim) {
     if (sim.currentRoute->previousSignal != nullptr) {
         this->previousSignal = sim.currentRoute->previousSignal;
-        if (this->current_vmax > this->previousSignal->currentAspect || this->current_vmax == 0) {
+        if (this->segment_vmax > this->previousSignal->currentAspect || this->current_vmax == 0) {
             this->current_vmax = this->previousSignal->currentAspect;
         }
 
+        // This is true when the signal is a Sign which shows the vmax of a segment
+        if (this->previousSignal->currentAspect % 10 == 0) {
+            this->segment_vmax = this->previousSignal->currentAspect;
+        }
+
+        if (this->nextSignal->currentAspect == LightAspects::GREEN) {
+            this->current_vmax = this->segment_vmax;
+        } else if (this->previousSignal->currentAspect == LightAspects::YELLOW) {
+            this->current_vmax = 40;
+        } else if (this->previousSignal->currentAspect == LightAspects::GREEN) {
+            this->current_vmax = segment_vmax;
+        }
 
         // Speeding checks
         if (this->speed_in_kmh > (float) sim.currentRoute->previousSignal->currentAspect + 5 && !this->applying_braking) {
@@ -144,10 +157,12 @@ void Train::update(Simulator &sim) {
         this->nextSignal = sim.currentRoute->nextSignal;
     } else {
         this->current_vmax = sim.currentRoute->startAspect;
+        this->segment_vmax = sim.currentRoute->startAspect;
         return;
     }
 
     this->nextSignal = sim.currentRoute->nextSignal;
+
     this->distance_next_signal = (float) sim.currentRoute->nextSignal->position.x - sim.screenPosition;
 
     // Reset emergency_braking boolean
@@ -167,13 +182,27 @@ void Train::update(Simulator &sim) {
         sim.currentRoute->changeNextSignal(sim, LightAspects::GREEN);
     }
 
+    if (stationComplete) {
+        sim.currentRoute->passStation();
+        atStation = false;
+        stationComplete = false;
+    }
 
-    for (Station *station : sim.currentRoute->stationList) {
-        if (this->position.x + train_pos_offset > station->beginPosition && this->position.x + train_pos_offset <= station->stoppingPosition) {
+    if (sim.currentRoute->nextStation != nullptr) {
+        this->nextStation = sim.currentRoute->nextStation;
+        distance_next_station = (float) this->nextStation->beginPosition - sim.screenPosition;
+        distance_next_station_end = (float) this->nextStation->stoppingPosition - sim.screenPosition;
+
+        if (distance_next_station < 0 && distance_next_station_end > 0) {
             atStation = true;
+        } else if (distance_next_station_end < 0) {
+            atStation = false;
+            sim.currentRoute->passStation();
         } else {
             atStation = false;
         }
+    } else {
+        distance_next_station_end = 100000;
     }
 
 

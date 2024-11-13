@@ -18,9 +18,18 @@ void Route::addSignal(Signal *signal) {
         this->nextSignal = signal;
     }
     this->signalList.push_back(signal);
+    this->addObject(signal);
 }
 
-void Route::addStation(Station *station) {
+void Route::addStation(Simulator &sim, Station *station) {
+    if (this->stationList.empty()) {
+        this->nextStation = station;
+    }
+    for (int i = 0; i < station->tileSpan; i++) {
+        auto *newObject = new Object(sim, "../resources/Station2.png", station->position);
+        newObject->rect.x += i * 1280;
+        this->addObject(newObject);
+    }
     this->stationList.push_back(station);
 }
 
@@ -31,12 +40,22 @@ void Route::update() {
 
 void Route::passSignal() {
     this->previousSignal = this->nextSignal;
-    this->nextSignal = this->signalList.front();
 
     if (this->signalList.size() == 1) {
         return;
     } else {
         this->signalList.pop_front();
+        this->nextSignal = this->signalList.front();
+    }
+}
+
+void Route::passStation() {
+    if (this->stationList.size() == 1) {
+        this->nextStation = nullptr;
+        return;
+    } else {
+        this->stationList.pop_front();
+        this->nextStation = this->stationList.front();
     }
 }
 
@@ -50,6 +69,8 @@ void Route::changeNextSignal(Simulator &sim, int aspect) {
 
 Route* Route::createRouteBasedOnTiles(Simulator &sim, PlacementScreen *placementScreen) {
     auto* route = new Route();
+
+    route->startAspect = SignAspects::VMAX_40;
 
     route->bg = new Object(sim, "../resources/Background.png", Vector2(0, 0));
     route->catenary = new Object(sim, "../resources/Bovenleiding.png", Vector2(0, 450));
@@ -71,7 +92,7 @@ Route* Route::createRouteBasedOnTiles(Simulator &sim, PlacementScreen *placement
         }
         if (!placementScreen->stationTiles.empty()) {
             if (placementScreen->stationTiles.find(i) != placementScreen->stationTiles.end()) {
-                route->addStation(placementScreen->stationTiles.at(i));
+                route->addStation(sim, placementScreen->stationTiles.at(i));
             }
         }
     }

@@ -23,6 +23,8 @@ public:
     Signal *previousSignal = nullptr;
     Signal *nextSignal = nullptr;
 
+    Station *nextStation = nullptr;
+
     int startAspect;
 
     // Background Objects
@@ -33,11 +35,12 @@ public:
     Train *train;
     void addObject(Object *object);
     void addSignal(Signal *signal);
-    void addStation(Station *station);
+    void addStation(Simulator &sim, Station *station);
 
     static Route* createRouteBasedOnTiles(Simulator &sim, PlacementScreen *placementScreen);
 
     void passSignal();
+    void passStation();
 
     void changeNextSignal(Simulator &sim, int aspect);
 
